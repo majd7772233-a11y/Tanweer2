@@ -66,7 +66,10 @@ object AmbientArtwork {
         canvas.drawRect(0f, 0f, width, height, paint)
     }
 
-    /** نسخة مصغّرة جاهزة للضباب (تُبنى مرة واحدة لكل مقاس شاشة). */
+    /**
+     * نسخة مصغّرة من الخلفية — هذه هي الصورة الواحدة التي تعرضها الشاشة
+     * **وتُعرض خلف كل سطح زجاجي**، فلا يرسم التطبيق الخلفية مرتين بصورتين مختلفتين.
+     */
     fun renderBitmap(width: Int, height: Int, downscale: Int = 5, phase: Float = 0f): Bitmap {
         val smallWidth = (width / downscale).coerceAtLeast(1)
         val smallHeight = (height / downscale).coerceAtLeast(1)
@@ -76,8 +79,8 @@ object AmbientArtwork {
     }
 
     /** الصورة الجاهزة للعرض (مضبَّبة إن طُلب ذلك). */
-    fun renderBlurredBitmap(width: Int, height: Int, radius: Int, downscale: Int = 5): Bitmap {
-        val bitmap = renderBitmap(width, height, downscale)
+    fun renderBlurredBitmap(width: Int, height: Int, radius: Int, downscale: Int = 5, phase: Float = 0f): Bitmap {
+        val bitmap = renderBitmap(width, height, downscale, phase)
         return if (radius > 0) BlurEngine.blur(bitmap, radius, downscale = 2) else bitmap
     }
 

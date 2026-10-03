@@ -51,18 +51,27 @@ import com.magd.tanweer.core.AmbientArtwork
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-/** الصورة المضبَّبة للخلفية المحيطة، تتقاسمها كل البطاقات في الشاشة. */
-val LocalAmbientBackdrop = staticCompositionLocalOf<ImageBitmap?> { null }
+/**
+ * الخلفية التي تتقاسمها كل الأسطح الزجاجية في الشاشة:
+ * الصورة (مضبَّبة أو نظيفة)، وموضعها داخل الجذر، ومعامل تصغيرها —
+ * حتى تقرأ كل بطاقة الجزء الواقع خلفها بالضبط.
+ */
+data class AmbientBackdrop(
+    val image: ImageBitmap,
+    val origin: Offset,
+    val scale: Float,
+)
 
-/** موضع الخلفية المحيطة داخل الجذر، حتى تتحاذى البطاقات معها. */
-val LocalAmbientOrigin = staticCompositionLocalOf { Offset.Zero }
+val LocalAmbientBackdrop = staticCompositionLocalOf<AmbientBackdrop?> { null }
 
 /**
  * الخلفية الحيّة: ليل + ضوء محيط يتحرك ببطء (ويثبت في الأجهزة الضعيفة أو عند
  * تقليل الحركة) — ومعها نجّهز نسخة مضبَّبة مصغّرة تُعرض داخل كل سطح زجاجي.
  *
- * بهذا يبدو الزجاج حقيقيًا على أندرويد 6 أيضًا (ضباب تمثيل منخفض الدقة)،
- * بينما يستخدم أندرويد 12+ `RenderEffect` عند الحاجة.
+ * هذه صورة واحدة لكل خطوة ضوء: تُعرض على الشاشة **وتُعرض خلف كل سطح زجاجي**،
+ * فيبدو الزجاج حقيقيًا على أندرويد 6 أيضًا (ضباب تمثيل منخفض الدقة)، ولا تُرسم
+ * الخلفية مرتين. وأندرويد 12+ يملك كذلك `BlurEngine.attachRenderEffect` لمن يريد
+ * ضبابًا حقيقيًا على عرض بعينه.
  */
 @Composable
 fun AmbientBackground(
@@ -87,14 +96,16 @@ fun AmbientBackground(
     )
     // حين يوقف الطالب الحركة، يبقى الضوء في مكانه لكن الهوية كما هي.
     val drawPhase = if (glass.animationsEnabled) phase else 0.5f
+    // الضوء يتحرك في خطوات هادئة (‎24 خطوة في الدورة‎) بدل صورة جديدة كل إطار.
+    val step = (drawPhase / (Math.PI / 12.0).toFloat()).toInt()
 
     var origin by remember { mutableStateOf(Offset.Zero) }
     var backdrop by remember { mutableStateOf<ImageBitmap?>(null) }
 
-    LaunchedEffect(widthPx, heightPx, glass.blurRadius) {
+    LaunchedEffect(widthPx, heightPx, glass.blurRadius, step) {
         backdrop = withContext(Dispatchers.Default) {
             val radius = if (glass.blurRadius <= 0f) 0 else (glass.blurRadius / 3f).toInt().coerceAtLeast(1)
-            AmbientArtwork.renderBlurredBitmap(widthPx, heightPx, radius).asImageBitmap()
+            AmbientArtwork.renderBlurredBitmap(widthPx, heightPx, radius, phase = drawPhase).asImageBitmap()
         }
     }
 
@@ -104,11 +115,21 @@ fun AmbientBackground(
             .onGloballyPositioned { origin = it.positionInRoot() },
     ) {
         Canvas(Modifier.fillMaxSize()) {
-            AmbientArtwork.draw(drawContext.canvas, size.width, size.height, drawPhase)
+            // اللون الليلي أولًا حتى لا تكون هناك ومضة سوداء قبل جهوز الصورة.
+            drawRect(color = TanweerColors.Midnight)
+            backdrop?.let { image ->
+                drawImage(
+                    image = image,
+                    srcSize = IntSize(image.width, image.height),
+                    dstSize = IntSize(size.width.toInt(), size.height.toInt()),
+                    filterQuality = FilterQuality.Low,
+                )
+            }
         }
         CompositionLocalProvider(
-            LocalAmbientBackdrop provides backdrop,
-            LocalAmbientOrigin provides origin,
+            LocalAmbientBackdrop provides backdrop?.let {
+                AmbientBackdrop(image = it, origin = origin, scale = it.width.toFloat() / widthPx.coerceAtLeast(1))
+            },
         ) {
             content()
         }
@@ -130,7 +151,6 @@ fun GlassSurface(
 ) {
     val glass = LocalGlassConfig.current
     val backdrop = LocalAmbientBackdrop.current
-    val ambientOrigin = LocalAmbientOrigin.current
     var ownOrigin by remember { mutableStateOf(Offset.Zero) }
 
     val fill = if (strong) TanweerColors.GlassFillStrong else TanweerColors.GlassFill
@@ -140,7 +160,7 @@ fun GlassSurface(
     val sliceAlpha = if (glass.highContrast) 0.9f else 0.72f
 
     val sliceModifier = if (backdrop != null && glass.blurRadius > 0f) {
-        Modifier.ambientSlice(backdrop, ambientOrigin, ownOrigin, sliceAlpha)
+        Modifier.ambientSlice(backdrop, ownOrigin, sliceAlpha)
     } else {
         Modifier
     }
@@ -166,21 +186,22 @@ fun GlassSurface(
 }
 
 private fun Modifier.ambientSlice(
-    backdrop: ImageBitmap,
-    ambientOrigin: Offset,
+    backdrop: AmbientBackdrop,
     ownOrigin: Offset,
     alpha: Float,
 ): Modifier = this.drawBehind {
-    val dx = (ambientOrigin.x - ownOrigin.x).toInt()
-    val dy = (ambientOrigin.y - ownOrigin.y).toInt()
-    if (dx < 0 || dy < 0 || dx >= backdrop.width || dy >= backdrop.height) return@drawBehind
+    val scale = backdrop.scale.coerceAtLeast(0.01f)
+    val dx = ((backdrop.origin.x - ownOrigin.x) * scale).toInt()
+    val dy = ((backdrop.origin.y - ownOrigin.y) * scale).toInt()
+    val image = backdrop.image
+    if (dx < 0 || dy < 0 || dx >= image.width || dy >= image.height) return@drawBehind
 
-    val width = minOf(size.width.toInt(), backdrop.width - dx)
-    val height = minOf(size.height.toInt(), backdrop.height - dy)
+    val width = minOf((size.width * scale).toInt().coerceAtLeast(1), image.width - dx)
+    val height = minOf((size.height * scale).toInt().coerceAtLeast(1), image.height - dy)
     if (width <= 0 || height <= 0) return@drawBehind
 
     drawImage(
-        image = backdrop,
+        image = image,
         srcOffset = IntOffset(dx, dy),
         srcSize = IntSize(width, height),
         dstOffset = IntOffset.Zero,
