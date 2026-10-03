@@ -1,0 +1,71 @@
+/**
+ * Tanweer — Cloudflare configuration.
+ *
+ * Bindings
+ *  - TANWEER_DB     : D1 database (structured data)
+ *  - TANWEER_FILES  : R2 bucket (images, PDFs, books)
+ *  - GROUP_CHAT     : Durable Object (realtime chat / presence)
+ *
+ * Secrets (never commit them here, use `wrangler secret put`):
+ *  - PASSWORD_PEPPER      pepper used for password salt + password hash
+ *  - SESSION_PEPPER       pepper used for session/refresh/recovery token hashes
+ *  - FILE_SIGNING_SECRET  HMAC key for signed R2 URLs
+ *
+ * NOTE: replace `database_id` with the real id after:
+ *   npx wrangler d1 create tanweer-db
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tanweer",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-01",
+  "workers_dev": true,
+  "preview_urls": true,
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    }
+  },
+  "triggers": {
+    // daily R2 clean-up: expired upload intents and images scheduled for purge
+    "crons": ["0 3 * * *"]
+  },
+  "vars": {
+    "APP_ENV": "production",
+    "SCHOOL_TIMEZONE": "Asia/Aden",
+    "MAX_UPLOAD_BYTES": "26214400",
+    "ALLOWED_ORIGINS": "*",
+    "PUBLIC_BASE_URL": "https://tanweer.magd.workers.dev"
+  },
+  "d1_databases": [
+    {
+      "binding": "TANWEER_DB",
+      "database_name": "tanweer-db",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "src/db/migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "TANWEER_FILES",
+      "bucket_name": "tanweer-files"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "GROUP_CHAT",
+        "class_name": "GroupChatDO"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["GroupChatDO"]
+    }
+  ]
+}

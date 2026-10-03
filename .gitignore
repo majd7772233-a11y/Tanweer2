@@ -1,0 +1,26 @@
+# ── Android ───────────────────────────────────────────────────────────────────
+.gradle/
+build/
+local.properties
+*.iml
+.idea/
+captures/
+.externalNativeBuild/
+.cxx/
+*.jks
+*.keystore
+app/release/
+
+# ── Gradle / Kotlin ──────────────────────────────────────────────────────────
+.kotlin/
+
+# ── Server (see also server/.gitignore) ──────────────────────────────────────
+server/node_modules/
+server/.wrangler/
+server/.dev.vars
+server/dist/
+
+# ── Editors / OS ────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
