@@ -110,6 +110,39 @@ describe('content', () => {
     expect(await download.text()).toBe('page-two');
   });
 
+  it('suggests a duplicate, merges only after the classmate confirms, and archives the absorbed page', async () => {
+    const student = await registerAccount({ gradeId: 10, sectionCode: 'D' });
+    const classmate = await registerAccount({ gradeId: 10, sectionCode: 'D' });
+    const title = 'درس الفيزياء — الحركة والسكون';
+
+    const base = await postLesson(student, { title, studyDate: isoDay(2) });
+    expect(base.merged).toBe(false);
+
+    // زميل يرفع الصفحة نفسها مرة أخرى: الخادم يقترح فقط، ولا يدمج من تلقاء نفسه.
+    const duplicate = await postLesson(classmate, { title, studyDate: isoDay(2) });
+    expect(duplicate.merged).toBe(false);
+    expect(duplicate.content.id).not.toBe(base.content.id);
+    expect(duplicate.similar.map((row) => row.id)).toContain(base.content.id);
+
+    const merged = await expectOk<DetailDto>('POST', `/api/v1/content/${duplicate.content.id}/merge`, {
+      token: classmate.accessToken,
+      body: { intoId: base.content.id },
+    });
+    expect(merged.content.id).toBe(base.content.id);
+    expect(merged.contributions.some((entry) => entry.kind === 'EDIT')).toBe(true);
+
+    // الصفحة المندمجة تبقى في السجل، لكنها تشير إلى النسخة الأصلية ولا تظهر في القوائم.
+    const absorbed = await expectOk<DetailDto>('GET', `/api/v1/content/${duplicate.content.id}`, { token: classmate.accessToken });
+    expect(absorbed.content.canonicalId).toBe(base.content.id);
+    expect(absorbed.content.status).toBe('ARCHIVED');
+    const relation = absorbed.relations.find((entry) => entry.kind === 'DUPLICATE');
+    expect(relation?.toId).toBe(base.content.id);
+
+    const visible = await expectOk<ContentDto[]>('GET', `/api/v1/content?groupId=${student.classGroupId}&date=${isoDay(2)}`, { token: student.accessToken });
+    expect(visible.map((row) => row.id)).not.toContain(duplicate.content.id);
+    expect(absorbed.history.map((entry) => entry.action)).toContain('MERGED');
+  });
+
   it('rejects a lesson dated in the future and a file that belongs to somebody else', async () => {
     const student = await registerAccount({ gradeId: 10, sectionCode: 'D' });
     const other = await registerAccount({ gradeId: 10, sectionCode: 'D' });

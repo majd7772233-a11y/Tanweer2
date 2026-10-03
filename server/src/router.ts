@@ -229,7 +229,7 @@ export function buildRouter(): Router {
   router.patch(`${v1}/me`, respond((ctx) => userService.updateProfile(ctx)), { middleware: [write] });
   router.get(`${v1}/me/devices`, respond((ctx) => userService.myDevices(ctx)));
   router.delete(`${v1}/me/devices/:deviceId`, respond((ctx) => userService.revokeDeviceById(ctx, ctx.param('deviceId'))));
-  router.post(`${v1}/me/push-token`, respond((ctx) => userService.registrationsPushToken(ctx, null)));
+  router.post(`${v1}/me/push-token`, respond((ctx) => userService.savePushToken(ctx)), { middleware: [write] });
   router.get(`${v1}/me/contributions`, respond((ctx) => userService.myContributions(ctx)));
   router.get(`${v1}/me/missed`, respond((ctx) => userService.missedSinceLastVisit(ctx)));
   router.get(`${v1}/me/widget`, respond((ctx) => userService.widgetSummary(ctx, ctx.q('groupId') ?? '')), { middleware: [optionalAuth] });

@@ -170,6 +170,23 @@ describe('auth', () => {
     expect(after.body.error?.code).toBe('SESSION_REVOKED');
   });
 
+  it('stores the push token for this device and clears it on an empty token', async () => {
+    const account = await registerAccount();
+    const { env } = await import('cloudflare:test');
+
+    await expectOk('POST', '/api/v1/me/push-token', { token: account.accessToken, body: { token: 'fcm-registration-abc' } });
+    const stored = await env.TANWEER_DB.prepare('SELECT push_token FROM devices WHERE device_id = ?1')
+      .bind(account.deviceId)
+      .first<{ push_token: string | null }>();
+    expect(stored?.push_token).toBe('fcm-registration-abc');
+
+    await expectOk('POST', '/api/v1/me/push-token', { token: account.accessToken, body: { token: '   ' } });
+    const cleared = await env.TANWEER_DB.prepare('SELECT push_token FROM devices WHERE device_id = ?1')
+      .bind(account.deviceId)
+      .first<{ push_token: string | null }>();
+    expect(cleared?.push_token).toBeNull();
+  });
+
   it('lists devices and revokes a single one', async () => {
     const account = await registerAccount();
     const devices = await expectOk<Array<{ id: string; platform: string }>>('GET', '/api/v1/me/devices', { token: account.accessToken });

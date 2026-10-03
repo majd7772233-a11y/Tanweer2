@@ -3,11 +3,10 @@ package com.magd.tanweer.core
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
+import java.util.UUID
 
 /**
  * كل نداءات الخادم في مكان واحد. لا تعرف الشاشات شيئًا عن HTTP أو JSON،
@@ -94,10 +93,12 @@ class TanweerApi(private val session: SessionManager) {
         sourceUrl: String?,
         fileIds: List<String>,
         mergeIntoId: String? = null,
+        clientUploadId: String = newClientUploadId(),
     ): JsonElement = api.request(
         "POST",
         "/api/v1/content",
         buildJsonObject {
+            put("clientUploadId", clientUploadId)
             put("groupId", groupId)
             put("type", type)
             put("title", title)
@@ -121,11 +122,17 @@ class TanweerApi(private val session: SessionManager) {
         },
     )
 
-    suspend fun addMedia(contentId: String, fileIds: List<String>, caption: String? = null) = api.request(
+    suspend fun addMedia(
+        contentId: String,
+        fileIds: List<String>,
+        caption: String? = null,
+        clientUploadId: String = newClientUploadId(),
+    ) = api.request(
         "POST",
         "/api/v1/content/$contentId/media",
         buildJsonObject {
             caption?.let { put("caption", it) }
+            put("clientUploadId", clientUploadId)
             putJsonArray("files") { fileIds.forEach { add(buildJsonObject { put("fileId", it) }) } }
         },
     )
@@ -212,10 +219,12 @@ class TanweerApi(private val session: SessionManager) {
         dueDate: String?,
         dueTime: String?,
         kind: String,
+        clientUploadId: String = newClientUploadId(),
     ) = api.request(
         "POST",
         "/api/v1/homeworks",
         buildJsonObject {
+            put("clientUploadId", clientUploadId)
             put("groupId", groupId)
             put("kind", kind)
             put("title", title)
@@ -272,10 +281,12 @@ class TanweerApi(private val session: SessionManager) {
         contentId: String? = null,
         homeworkId: String? = null,
         examId: String? = null,
+        clientUploadId: String = newClientUploadId(),
     ) = api.request(
         "POST",
         "/api/v1/issues",
         buildJsonObject {
+            put("clientUploadId", clientUploadId)
             put("groupId", groupId)
             put("title", title)
             body?.takeIf { it.isNotBlank() }?.let { put("body", it) }
@@ -300,37 +311,61 @@ class TanweerApi(private val session: SessionManager) {
 
     // ── الجدول والتصويت ───────────────────────────────────────────────────────
 
-    suspend fun schedule(groupId: String? = null, date: String? = null): JsonElement =
-        api.request("GET", "/api/v1/schedule", query = buildQuery("groupId" to groupId, "date" to date))
+    suspend fun schedule(groupId: String? = null, date: String? = null): ScheduleView = decode(
+        api.request("GET", "/api/v1/schedule", query = buildQuery("groupId" to groupId, "date" to date)),
+        ScheduleView.serializer(),
+    )
 
-    suspend fun fillPeriod(groupId: String, weekday: Int, period: Int, subjectId: Int, room: String? = null) =
-        api.request(
-            "POST",
-            "/api/v1/schedule/slots",
-            buildJsonObject {
-                put("groupId", groupId)
-                put("weekday", weekday)
-                put("period", period)
-                put("subjectId", subjectId)
-                room?.let { put("room", it) }
-            },
-        )
+    suspend fun fillPeriod(
+        groupId: String,
+        weekday: Int,
+        period: Int,
+        subjectId: Int,
+        room: String? = null,
+        clientUploadId: String = newClientUploadId(),
+    ) = api.request(
+        "POST",
+        "/api/v1/schedule/slots",
+        buildJsonObject {
+            put("groupId", groupId)
+            put("weekday", weekday)
+            put("period", period)
+            put("subjectId", subjectId)
+            room?.let { put("room", it) }
+            put("clientUploadId", clientUploadId)
+        },
+    )
 
-    suspend fun proposeScheduleChange(groupId: String, weekday: Int, period: Int, subjectId: Int?, reason: String) =
-        api.request(
-            "POST",
-            "/api/v1/schedule/proposals",
-            buildJsonObject {
-                put("groupId", groupId)
-                put("weekday", weekday)
-                put("period", period)
-                subjectId?.let { put("subjectId", it) }
-                put("reason", reason)
-            },
-        )
+    /**
+     * تغيير حصة قائمة يحتاج تصويت المجموعة (لا يُطبَّق تلقائيًا أبدًا).
+     * `proposedSubjectId = null` مع `kind = "REMOVE"` يعني اقتراح حذف الحصة.
+     */
+    suspend fun proposeScheduleChange(
+        groupId: String,
+        weekday: Int,
+        period: Int,
+        proposedSubjectId: Int?,
+        reason: String,
+        kind: String = if (proposedSubjectId == null) "REMOVE" else "CHANGE",
+        clientUploadId: String = newClientUploadId(),
+    ) = api.request(
+        "POST",
+        "/api/v1/schedule/proposals",
+        buildJsonObject {
+            put("groupId", groupId)
+            put("weekday", weekday)
+            put("period", period)
+            proposedSubjectId?.let { put("proposedSubjectId", it) }
+            put("kind", kind)
+            put("reason", reason)
+            put("clientUploadId", clientUploadId)
+        },
+    )
 
-    suspend fun proposals(groupId: String): JsonElement =
-        api.request("GET", "/api/v1/schedule/proposals", query = buildQuery("groupId" to groupId))
+    suspend fun proposals(groupId: String, status: String = "PENDING"): List<Proposal> = decodeList(
+        api.request("GET", "/api/v1/schedule/proposals", query = buildQuery("groupId" to groupId, "status" to status)),
+        Proposal.serializer(),
+    )
 
     suspend fun vote(targetType: String, targetId: String, value: String, comment: String? = null): VoteResult =
         decode(
@@ -366,27 +401,48 @@ class TanweerApi(private val session: SessionManager) {
         Book.serializer(),
     )
 
-    suspend fun createBook(title: String, subjectId: Int?, rights: String, fileId: String?, sourceUrl: String?, pages: Int?) =
-        api.request(
-            "POST",
-            "/api/v1/books",
-            buildJsonObject {
-                put("title", title)
-                subjectId?.let { put("subjectId", it) }
-                put("rights", rights)
-                fileId?.let { put("fileId", it) }
-                sourceUrl?.let { put("sourceUrl", it) }
-                pages?.let { put("pages", it) }
-            },
-        )
+    suspend fun createBook(
+        gradeId: Int,
+        title: String,
+        subjectId: Int?,
+        rights: String,
+        fileId: String?,
+        sourceUrl: String?,
+        pages: Int?,
+        edition: String? = null,
+        publisher: String? = null,
+        clientUploadId: String = newClientUploadId(),
+    ) = api.request(
+        "POST",
+        "/api/v1/books",
+        buildJsonObject {
+            put("gradeId", gradeId)
+            put("title", title)
+            subjectId?.let { put("subjectId", it) }
+            put("rights", rights)
+            fileId?.let { put("fileId", it) }
+            sourceUrl?.let { put("sourceUrl", it) }
+            pages?.let { put("pages", it) }
+            edition?.let { put("edition", it) }
+            publisher?.let { put("publisher", it) }
+            put("clientUploadId", clientUploadId)
+        },
+    )
 
     suspend fun notes(): List<Note> = decodeList(api.request("GET", "/api/v1/notes"), Note.serializer())
 
-    suspend fun createNote(body: String, title: String?, groupId: String?, subjectId: Int?, studyDate: String?) =
-        api.request(
+    suspend fun createNote(
+        body: String,
+        title: String?,
+        groupId: String?,
+        subjectId: Int?,
+        studyDate: String?,
+        clientUploadId: String = newClientUploadId(),
+    ) = api.request(
             "POST",
             "/api/v1/notes",
             buildJsonObject {
+                put("clientUploadId", clientUploadId)
                 put("body", body)
                 title?.takeIf { it.isNotBlank() }?.let { put("title", it) }
                 groupId?.let { put("groupId", it) }
@@ -484,20 +540,29 @@ class TanweerApi(private val session: SessionManager) {
             ChatPage.serializer(),
         )
 
-    suspend fun sendMessage(roomId: String, body: String, replyToId: String? = null): ChatMessage = decode(
+    suspend fun sendMessage(
+        roomId: String,
+        body: String,
+        replyToId: String? = null,
+        clientId: String = UUID.randomUUID().toString(),
+    ): ChatMessage = decode(
         api.request(
             "POST",
             "/api/v1/chat/rooms/$roomId/messages",
             buildJsonObject {
                 put("body", body)
                 replyToId?.let { put("replyToId", it) }
+                // `clientId` يمكّن التطبيق من مطابقة الرسالة المتفائلة عند وصول تأكيد الخادم.
+                put("clientId", clientId)
+                put("clientUploadId", clientId)
             },
         ),
         ChatMessage.serializer(),
     )
 
-    suspend fun markRoomRead(roomId: String, seq: Long) =
-        api.request("POST", "/api/v1/chat/rooms/$roomId/read", buildJsonObject { put("seq", seq) })
+    /** يعلّم الرسائل كمقروءة حتى `lastSeq` (اسم الحقل كما في الخادم). */
+    suspend fun markRoomRead(roomId: String, lastSeq: Long) =
+        api.request("POST", "/api/v1/chat/rooms/$roomId/read", buildJsonObject { put("lastSeq", lastSeq) })
 
     suspend fun typing(roomId: String) = api.request("POST", "/api/v1/chat/rooms/$roomId/typing", buildJsonObject { })
 
@@ -512,6 +577,7 @@ class TanweerApi(private val session: SessionManager) {
         purpose: String = "CONTENT_MEDIA",
         groupId: String? = null,
         fileName: String? = null,
+        clientUploadId: String = newClientUploadId(),
     ): FileCompletion {
         val checksum = PasswordCrypto.sha256Hex(bytes)
         val intent = decode(
@@ -519,6 +585,7 @@ class TanweerApi(private val session: SessionManager) {
                 "POST",
                 "/api/v1/files/upload-intent",
                 buildJsonObject {
+                    put("clientUploadId", clientUploadId)
                     put("purpose", purpose)
                     put("mimeType", mimeType)
                     put("sizeBytes", bytes.size)
@@ -559,6 +626,9 @@ class TanweerApi(private val session: SessionManager) {
         "ISSUE" -> "issues"
         else -> "content"
     }
+
+    /** مفتاح تكرار لكل عملية كتابة: نفس المفتاح مع نفس الطلب = نتيجة واحدة، لا صفّان (§85). */
+    private fun newClientUploadId(): String = UUID.randomUUID().toString()
 
     private fun <T> decode(element: JsonElement, serializer: KSerializer<T>): T =
         json.decodeFromJsonElement(serializer, element)

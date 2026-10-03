@@ -17,7 +17,7 @@ import kotlin.math.min
  */
 object BlurEngine {
 
-    /** ضباب حقيقي متاح؟ */
+    /** ضباب حقيقي متاح؟ (RenderEffect على أندرويد 12+). */
     val supportsRenderEffect: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
     /** نصف القطر المناسب لهذا الجهاز. */
@@ -102,10 +102,19 @@ object BlurEngine {
 
     private fun clamp(value: Int, low: Int, high: Int): Int = min(max(value, low), high)
 
-    /** استخدمه عند الحاجة لإخبار النظام أن العرض يهتم بالضباب. */
+    /**
+     * ضباب الـGPU الحقيقي على أندرويد 12+ (ويُتجاهل بهدوء على ما قبله).
+     * `RenderEffect` نفسه لا يوجد قبل API 31، لذا الفحص هنا مباشر داخل الدالة
+     * حتى يبقى الاستدعاء آمنًا على أندرويد 6.
+     */
+    @androidx.annotation.RequiresApi(Build.VERSION_CODES.S)
+    private fun renderEffect(radius: Float): android.graphics.RenderEffect =
+        android.graphics.RenderEffect.createBlurEffect(radius, radius, android.graphics.Shader.TileMode.CLAMP)
+
+    /** يطبّق ضبابًا حقيقيًا على عرض، أو يتركه كما هو إن لم يكن الضباب متاحًا. */
     fun attachRenderEffect(view: View, radius: Float) {
-        if (!supportsRenderEffect) return
-        val effect = android.graphics.RenderEffect.createBlurEffect(radius, radius, android.graphics.Shader.TileMode.CLAMP)
-        view.setRenderEffect(effect)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            view.setRenderEffect(renderEffect(radius))
+        }
     }
 }

@@ -85,9 +85,8 @@ fun AmbientBackground(
         ),
         label = "ambientPhase",
     )
-    val effectivePhase = if (glass.animationsEnabled) phase else 0.5f
-    val livePhase by remember { mutableStateOf(effectivePhase) }
-    val drawPhase = if (glass.animationsEnabled) livePhase else 0.5f
+    // حين يوقف الطالب الحركة، يبقى الضوء في مكانه لكن الهوية كما هي.
+    val drawPhase = if (glass.animationsEnabled) phase else 0.5f
 
     var origin by remember { mutableStateOf(Offset.Zero) }
     var backdrop by remember { mutableStateOf<ImageBitmap?>(null) }
@@ -105,7 +104,7 @@ fun AmbientBackground(
             .onGloballyPositioned { origin = it.positionInRoot() },
     ) {
         Canvas(Modifier.fillMaxSize()) {
-            AmbientArtwork.draw(this, size.width, size.height, drawPhase)
+            AmbientArtwork.draw(drawContext.canvas, size.width, size.height, drawPhase)
         }
         CompositionLocalProvider(
             LocalAmbientBackdrop provides backdrop,

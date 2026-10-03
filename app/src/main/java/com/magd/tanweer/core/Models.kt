@@ -323,12 +323,16 @@ data class ScheduleSlot(
     val weekday: Int = 0,
     val period: Int = 1,
     val subject: Subject? = null,
-    @SerialName("subjectId") val subjectId: Int? = null,
     val room: String? = null,
+    val notes: String? = null,
 )
 
 @Serializable
-data class ScheduleDay(val weekday: Int, val slots: List<ScheduleSlot> = emptyList())
+data class ScheduleDay(
+    val weekday: Int,
+    val weekdayName: String = "",
+    val slots: List<ScheduleSlot> = emptyList(),
+)
 
 @Serializable
 data class ScheduleVersion(
@@ -337,6 +341,14 @@ data class ScheduleVersion(
     val effectiveFrom: String? = null,
     val effectiveTo: String? = null,
     val status: String = "ACTIVE",
+    val notes: String? = null,
+)
+
+/** `GET /schedule` يعيد الأسبوع كاملًا: `{version, days[]}`. */
+@Serializable
+data class ScheduleWeek(
+    val version: ScheduleVersion? = null,
+    val days: List<ScheduleDay> = emptyList(),
 )
 
 @Serializable
@@ -345,27 +357,31 @@ data class ScheduleView(
     val weekday: Int? = null,
     val version: ScheduleVersion? = null,
     val day: ScheduleDay = ScheduleDay(weekday = 0),
+    val week: ScheduleWeek = ScheduleWeek(),
     val canEdit: Boolean = false,
     val mySection: String? = null,
-    val week: List<ScheduleDay> = emptyList(),
 )
 
 @Serializable
 data class Proposal(
     val id: String,
     val groupId: String = "",
-    val kind: String = "SET",
-    val status: String = "PENDING",
+    val versionId: String? = null,
     val weekday: Int = 0,
+    val weekdayName: String = "",
     val period: Int = 1,
-    val subject: Subject? = null,
+    val kind: String = "CHANGE",
+    val currentSubjectId: Int? = null,
     val proposedSubjectId: Int? = null,
     val reason: String? = null,
+    val status: String = "PENDING",
     val approveCount: Int = 0,
     val rejectCount: Int = 0,
     val eligibleCount: Int = 0,
-    val createdBy: Author = Author(),
+    val remaining: Int = 0,
+    val proposedBy: String = "",
     val createdAt: String = "",
+    val decidedAt: String? = null,
 )
 
 @Serializable

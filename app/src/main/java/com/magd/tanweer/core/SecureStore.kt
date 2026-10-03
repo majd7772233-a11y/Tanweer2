@@ -19,7 +19,8 @@ class SecureStore(context: Context) {
     private val prefs = context.getSharedPreferences("tanweer_secure", Context.MODE_PRIVATE)
 
     private fun secretKey(): SecretKey {
-        val keyStore = KeyStore.getInstance(ANDROID_KEYSTORE).apply { load(null) }
+        // `load(null, null)` هو الصيغة المتاحة منذ API 1 (صيغة ذات وسيط واحد أُضيفت في API 26).
+        val keyStore = KeyStore.getInstance(ANDROID_KEYSTORE).apply { load(null, null) }
         (keyStore.getEntry(KEY_ALIAS, null) as? KeyStore.SecretKeyEntry)?.let { return it.secretKey }
 
         val generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEYSTORE)

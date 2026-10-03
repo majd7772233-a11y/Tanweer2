@@ -111,12 +111,25 @@ export async function revokeDeviceById(ctx: Ctx, deviceRowId: string) {
   return { revoked: true, wasCurrent: deviceRowId === ctx.device?.id };
 }
 
+/**
+ * حفظ رمز الإشعارات الخاص بهذا الجهاز (§78).
+ *
+ * الرمز يأتي في جسم الطلب: `{ token }`. ورمز فارغ يعني «ألغِ التسجيل لهذا الجهاز».
+ * (كانت الدالة تستقبل الرمز من الموجِّه وكان يمرّره `null` دائمًا، فيضيع الرمز.)
+ */
+export async function savePushToken(ctx: Ctx) {
+  const input = await ctx.require(V.object({ token: V.string({ max: 4096, allowEmpty: true }) }));
+  const token = input.token.trim();
+  return registrationsPushToken(ctx, token.length > 0 ? token : null);
+}
+
 export async function registrationsPushToken(ctx: Ctx, pushToken: string | null) {
   const device = ctx.device;
   if (!device) throw new ApiError('UNAUTHORIZED');
   await ctx.env.TANWEER_DB.prepare('UPDATE devices SET push_token = ?1, updated_at = ?2 WHERE id = ?3')
     .bind(pushToken, ctx.now, device.id)
     .run();
+  audit(ctx, { action: 'user.pushToken.saved', entityType: 'DEVICE', entityId: device.id, meta: { cleared: pushToken === null } });
   return { updated: true };
 }
 

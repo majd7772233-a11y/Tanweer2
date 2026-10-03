@@ -113,6 +113,9 @@ class SessionManager(
         }
         val result = decode(api.request("POST", "/api/v1/auth/login", body, authenticated = false), LoginResult.serializer())
         accept(result.user, result.tokens)
+        // نتذكّر الرقم لنشتقّ منه لاحقًا عند تغيير كلمة المرور (الرقم ليس سرًّا،
+        // وكلمة المرور نفسها لا تُخزَّن أبدًا).
+        rememberPhone(kdf.phone)
         return result.user
     }
 
@@ -137,6 +140,7 @@ class SessionManager(
         }
         val result = decode(api.request("POST", "/api/v1/auth/register", body, authenticated = false), RegisterResult.serializer())
         accept(result.user, result.tokens)
+        rememberPhone(kdf.phone)
         return result
     }
 
@@ -150,17 +154,16 @@ class SessionManager(
             put("device", devicePayload)
         }
         val element = api.request("POST", "/api/v1/auth/recovery/reset", body, authenticated = false)
+        rememberPhone(kdf.phone)
         return element.stringOrNull("recoveryCode") ?: ""
     }
 
     suspend fun changePassword(currentPassword: String, newPassword: String) {
-        val phone = user?.let { storedPhone() } ?: return
-        val current = kdfParams(phone).let { kdf ->
-            PasswordCrypto.deriveAuthKey(currentPassword, kdf.salt, kdf.iterations, kdf.keyLength)
-        }
-        val next = kdfParams(phone).let { kdf ->
-            PasswordCrypto.deriveAuthKey(newPassword, kdf.salt, kdf.iterations, kdf.keyLength)
-        }
+        val phone = storedPhone().takeIf { it.isNotBlank() } ?: return
+        // ملح الرقم واحد عند الخادم، فيكفي نداء واحد لاشتقاق المفتاحين.
+        val kdf = kdfParams(phone)
+        val current = PasswordCrypto.deriveAuthKey(currentPassword, kdf.salt, kdf.iterations, kdf.keyLength)
+        val next = PasswordCrypto.deriveAuthKey(newPassword, kdf.salt, kdf.iterations, kdf.keyLength)
         val body = buildJsonObject {
             put("currentAuthKey", current)
             put("newAuthKey", next)

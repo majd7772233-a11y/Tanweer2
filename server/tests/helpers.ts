@@ -108,6 +108,7 @@ export interface TestAccount {
   refreshToken: string;
   recoveryCode: string;
   classGroupId: string;
+  deviceId: string;
   gradeId: number;
   sectionCode: string;
   fullName: string;
@@ -153,6 +154,7 @@ export async function registerAccount(overrides: Partial<{ fullName: string; gra
     refreshToken: data.tokens.refreshToken,
     recoveryCode: data.recoveryCode,
     classGroupId: data.groups.find((group) => group.kind === 'CLASS')?.id ?? '',
+    deviceId: `dev-${phone.slice(-7)}`,
     gradeId,
     sectionCode,
     fullName,
