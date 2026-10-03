@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- الهالة -->
+    <path
+        android:fillAlpha="0.18"
+        android:fillColor="#7FE3E8"
+        android:pathData="M54,26 C44,26 36,34 36,44 C36,50 39,55 44,58 L44,66 L64,66 L64,58 C69,55 72,50 72,44 C72,34 64,26 54,26 Z" />
+    <!-- جسم المصباح -->
+    <path
+        android:fillColor="#7FE3E8"
+        android:pathData="M46,24 L62,24 L58,30 L50,30 Z" />
+    <path
+        android:fillColor="#EDF3FA"
+        android:pathData="M54,28 C45.7,28 39,34.7 39,43 C39,48.3 41.9,52.9 46.2,55.4 L46.2,62 L61.8,62 L61.8,55.4 C66.1,52.9 69,48.3 69,43 C69,34.7 62.3,28 54,28 Z" />
+    <path
+        android:fillColor="#FFC46B"
+        android:pathData="M54,36 C49.6,36 46,39.6 46,44 C46,46.6 47.4,49 49.6,50.3 L49.6,54 L58.4,54 L58.4,50.3 C60.6,49 62,46.6 62,44 C62,39.6 58.4,36 54,36 Z" />
+    <path
+        android:fillColor="#6FA8FF"
+        android:pathData="M44,68 L64,68 L64,74 C64,77.3 61.3,80 58,80 L50,80 C46.7,80 44,77.3 44,74 Z" />
+</vector>

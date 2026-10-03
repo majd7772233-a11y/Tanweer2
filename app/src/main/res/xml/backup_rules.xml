@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- لا تُنسخ الأسرار ولا رموز الجلسات إلى نسخة احتياطية -->
+    <exclude domain="sharedpref" path="tanweer_secure.xml" />
+    <exclude domain="sharedpref" path="tanweer_session.xml" />
+    <exclude domain="database" path="tanweer_offline.db" />
+</full-backup-content>

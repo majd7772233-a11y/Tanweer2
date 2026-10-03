@@ -1,0 +1,28 @@
+{
+  "name": "tanweer-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tanweer (تنوير) — Cloudflare Worker API: Worker + D1 + R2 + Durable Objects",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "types": "wrangler types",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:migrate:local": "wrangler d1 migrations apply TANWEER_DB --local",
+    "db:migrate:remote": "wrangler d1 migrations apply TANWEER_DB --remote",
+    "db:migrations:list": "wrangler d1 migrations list TANWEER_DB --remote"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.22.0",
+    "@cloudflare/workers-types": "^5.20260926.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11",
+    "wrangler": "^4.141.0"
+  }
+}

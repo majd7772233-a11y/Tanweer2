@@ -1,0 +1,35 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+      الثيم الأساسي: ليلي، بلا شريط عنوان، أشرطة النظام شفافة ليمتد الزجاج تحتها.
+      كل الألوان تأتي من Compose (Liquid Glass) وهذا الملف يضمن فقط ألا تومض
+      الشاشة بالأبيض قبل تحميل أول إطار.
+    -->
+    <style name="Theme.Tanweer" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/splash_background</item>
+        <item name="android:colorBackground">@color/midnight</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:navigationBarColor">@color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="p">shortEdges</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowSharedElementsUseOverlay">false</item>
+        <item name="android:colorAccent">@color/cyan_soft</item>
+        <item name="android:colorPrimary">@color/cyan_soft</item>
+        <item name="android:colorControlHighlight">@color/glass_press</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Tanweer</item>
+    </style>
+
+    <!-- انتقالات هادئة موحّدة (تقلّ مدتها تلقائيًا مع خيار تقليل الحركة) -->
+    <style name="Animation.Tanweer" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@android:anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@android:anim/fade_out</item>
+    </style>
+</resources>

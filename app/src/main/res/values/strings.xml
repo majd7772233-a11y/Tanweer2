@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- العربية هي اللغة الافتراضية. كل نص في التطبيق يأتي من هنا (أو من values-en). -->
+<resources>
+
+    <!-- ══ التطبيق ═════════════════════════════════════════════════════════════ -->
+
+    <!-- ══ التنقّل ══════════════════════════════════════════════════════════════ -->
+    <string name="nav_today">اليوم</string>
+    <string name="nav_calendar">تقويم</string>
+    <string name="nav_homework">واجبات</string>
+    <string name="nav_more">أكثر</string>
+    <string name="nav_chat">الدردشة</string>
+
+    <!-- ══ مشترك ═══════════════════════════════════════════════════════════════ -->
+    <string name="action_retry">إعادة المحاولة</string>
+    <string name="action_cancel">إلغاء</string>
+    <string name="action_save">حفظ</string>
+    <string name="action_delete">حذف</string>
+    <string name="action_close">إغلاق</string>
+    <string name="action_send">إرسال</string>
+    <string name="action_search">بحث</string>
+    <string name="action_filter">تصفية</string>
+    <string name="action_back">رجوع</string>
+    <string name="action_confirm">تأكيد</string>
+    <string name="action_add">إضافة</string>
+    <string name="action_edit">تعديل</string>
+    <string name="action_done">تم</string>
+    <string name="action_next">التالي</string>
+    <string name="action_publish">نشر</string>
+    <string name="action_open">فتح</string>
+    <string name="action_continue">متابعة</string>
+    <string name="action_logout">تسجيل الخروج</string>
+    <string name="action_copy">نسخ</string>
+
+    <!-- ══ الحالات ═════════════════════════════════════════════════════════════ -->
+    <string name="state_loading">جارٍ التحميل…</string>
+    <string name="state_empty">لا يوجد شيء هنا بعد</string>
+    <string name="state_offline">أنت غير متصل — نعرض ما حُفظ على الجهاز</string>
+    <string name="state_partial">ظهر جزء من المحتوى، والباقي لم يُحمَّل بعد</string>
+    <string name="state_error">تعذّر إكمال العملية</string>
+    <string name="state_syncing">جارٍ المزامنة…</string>
+    <string name="state_synced">تمت المزامنة</string>
+    <string name="state_sync_pending">بانتظار المزامنة</string>
+    <string name="state_saved_offline">حُفظ على الجهاز وسيُرسل عند الاتصال</string>
+
+    <!-- ══ الحساب ══════════════════════════════════════════════════════════════ -->
+    <string name="auth_welcome_title">مرحبًا بك في تنوير</string>
+    <string name="auth_welcome_body">ادخل برقم هاتفك. لا رسائل ولا رموز تحقق — كلمة مرور واحدة تكفي.</string>
+    <string name="auth_phone_label">رقم الهاتف</string>
+    <string name="auth_phone_hint">7xxxxxxxx</string>
+    <string name="auth_phone_invalid">أدخل رقمًا صحيحًا (٩ أرقام يبدأ بـ7)</string>
+    <string name="auth_password_label">كلمة المرور</string>
+    <string name="auth_password_short">كلمة المرور قصيرة — ٨ أحرف على الأقل</string>
+    <string name="auth_login">تسجيل الدخول</string>
+    <string name="auth_register">إنشاء حساب</string>
+    <string name="auth_new_account">ليس لديك حساب؟ أنشئ واحدًا</string>
+    <string name="auth_have_account">لديك حساب؟ سجّل الدخول</string>
+    <string name="auth_full_name">الاسم الكامل</string>
+    <string name="auth_name_short">أدخل اسمك كما يعرفك زملاؤك</string>
+    <string name="auth_email_optional">البريد الإلكتروني (اختياري)</string>
+    <string name="auth_grade">الصف</string>
+    <string name="auth_section">الشعبة</string>
+    <string name="auth_pick_grade">اختر صفك</string>
+    <string name="auth_pick_section">اختر شعبتك</string>
+    <string name="auth_signup_title">حساب جديد</string>
+    <string name="auth_signup_body">اختر صفك وشعبتك، وستنضم تلقائيًا إلى مجموعة صفك.</string>
+    <string name="auth_recovery_title">رمز الاستعادة</string>
+    <string name="auth_recovery_body">اكتب هذا الرمز واحفظه في مكان آمن. يُعرض مرة واحدة فقط، وهو طريقك الوحيد إذا نسيت كلمة المرور.</string>
+    <string name="auth_recovery_copy">نسخ الرمز</string>
+    <string name="auth_recovery_copied">تم نسخ الرمز</string>
+    <string name="auth_recovery_saved">حفظته في مكان آمن</string>
+    <string name="auth_forgot_password">نسيت كلمة المرور؟</string>
+    <string name="auth_recovery_code_label">رمز الاستعادة</string>
+    <string name="auth_new_password">كلمة المرور الجديدة</string>
+    <string name="auth_reset_password">تعيين كلمة مرور جديدة</string>
+    <string name="auth_login_failed">رقم الهاتف أو كلمة المرور غير صحيحة</string>
+    <string name="auth_account_locked">تم إيقاف المحاولات مؤقتًا. حاول بعد قليل.</string>
+    <string name="auth_phone_taken">هذا الرقم مسجّل بالفعل</string>
+    <string name="auth_session_expired">انتهت الجلسة، سجّل الدخول من جديد</string>
+    <string name="auth_logout_confirm">تسجيل الخروج من هذا الجهاز؟</string>
+    <string name="auth_terms_note">بإنشاء الحساب فأنت توافق على قواعد المجتمع: المحتوى الرسمي منظَّم، والإزالة تحتاج إجماع الأعضاء.</string>
+
+    <!-- ══ اليوم ═══════════════════════════════════════════════════════════════ -->
+    <string name="today_title">اليوم</string>
+    <string name="today_progress">توثيق اليوم</string>
+    <string name="today_documented">مُوثَّق</string>
+    <string name="today_needs_contribution">نحتاج مساهمة</string>
+    <string name="today_upcoming">لم تبدأ بعد</string>
+    <string name="today_not_school_day">لا دراسة اليوم</string>
+    <string name="today_holiday">إجازة</string>
+    <string name="today_period">الحصة %1$d</string>
+    <string name="today_no_schedule">لا يوجد جدول لهذا اليوم بعد</string>
+    <string name="today_fill_schedule">عبِّئ الجدول</string>
+    <string name="today_summary">ملخّص اليوم</string>
+    <string name="today_open_day">صفحة اليوم كاملة</string>
+    <string name="today_no_lessons">لم تُوثَّق حصص اليوم بعد</string>
+    <string name="today_next_exam">أقرب اختبار</string>
+    <string name="today_contribute_cta">أضف ما درسته</string>
+    <string name="today_tomorrow">غدًا</string>
+
+    <!-- ══ بطاقة المادة ════════════════════════════════════════════════════════ -->
+    <string name="card_documented">✅ مُوثَّق</string>
+    <string name="card_needs">🟡 نحتاج مساهمة</string>
+    <string name="card_upcoming">⚪ لم يبدأ</string>
+    <string name="card_not_school">⚪ إجازة</string>
+    <string name="card_lessons_count">دروس: %1$d</string>
+    <string name="card_homework_count">واجبات: %1$d</string>
+    <string name="card_files_count">ملفات: %1$d</string>
+    <string name="card_notes_count">ملاحظات: %1$d</string>
+    <string name="card_contributors">مساهمات: %1$d</string>
+
+    <!-- ══ التقويم ═════════════════════════════════════════════════════════════ -->
+    <string name="calendar_title">التقويم</string>
+    <string name="calendar_legend">النقطة تعني أن في اليوم محتوى موثَّقًا</string>
+    <string name="calendar_add_old">اضغط مطوّلًا على أي يوم لإضافة محتوى قديم</string>
+    <string name="calendar_empty_day">لا محتوى في هذا اليوم</string>
+    <string name="calendar_go_today">اليوم</string>
+
+    <!-- ══ صفحة اليوم ══════════════════════════════════════════════════════════ -->
+    <string name="day_title">يوم %1$s</string>
+    <string name="day_progress_label">نسبة التوثيق: %1$d%%</string>
+    <string name="day_subjects">مواد اليوم</string>
+    <string name="day_add">أضف إلى هذا اليوم</string>
+    <string name="day_needs_hint">فُتحت الحصة ولم يُوثَّق شيء. من يضيفها؟</string>
+
+    <!-- ══ المادة ══════════════════════════════════════════════════════════════ -->
+    <string name="subject_lessons">الدروس</string>
+    <string name="subject_homework">الواجبات</string>
+    <string name="subject_files">الملفات</string>
+    <string name="subject_questions">الاستفسارات</string>
+    <string name="subject_timeline">الخط الزمني</string>
+    <string name="subject_empty">لا محتوى في هذه المادة بعد</string>
+
+    <!-- ══ المحتوى ═════════════════════════════════════════════════════════════ -->
+    <string name="content_type_lesson">درس</string>
+    <string name="content_type_photo">صورة</string>
+    <string name="content_type_file">ملف</string>
+    <string name="content_type_note">ملاحظة</string>
+    <string name="content_type_summary">ملخّص</string>
+    <string name="content_type_link">رابط</string>
+    <string name="content_new_title">إضافة محتوى</string>
+    <string name="content_pick_type">ماذا تريد أن تضيف؟</string>
+    <string name="content_pick_type_photo">صورة درس</string>
+    <string name="content_pick_type_lesson">درس مكتوب</string>
+    <string name="content_pick_type_homework">واجب</string>
+    <string name="content_pick_type_file">ملف</string>
+    <string name="content_pick_type_note">ملاحظة</string>
+    <string name="content_title_field">العنوان</string>
+    <string name="content_body_field">التفاصيل (اختياري)</string>
+    <string name="content_subject_field">المادة</string>
+    <string name="content_date_field">تاريخ الدرس</string>
+    <string name="content_period_field">الحصة</string>
+    <string name="content_scope_field">يظهر لـ</string>
+    <string name="content_scope_all">كل الشعب</string>
+    <string name="content_scope_section">شعبتي فقط (%1$s)</string>
+    <string name="content_link_field">الرابط</string>
+    <string name="content_add_pages">أضف صور الدرس</string>
+    <string name="content_add_page">صفحة أخرى</string>
+    <string name="content_pages_count">%1$d صفحات</string>
+    <string name="content_page_of">صفحة %1$d من %2$d</string>
+    <string name="content_enhance">تحسين الصورة</string>
+    <string name="content_enhance_auto">تحسين تلقائي</string>
+    <string name="content_rotate">تدوير</string>
+    <string name="content_contrast">الوضوح</string>
+    <string name="content_grayscale">أبيض وأسود</string>
+    <string name="content_duplicate_found">هذه الصفحة موجودة بالفعل في هذه المادة</string>
+    <string name="content_duplicate_join">أضفها إلى الدرس القائم</string>
+    <string name="content_duplicate_new">أنشئ درسًا منفصلًا</string>
+    <string name="content_similar_found">يوجد محتوى مشابه</string>
+    <string name="content_similar_merge">دمج مع الموجود؟</string>
+    <string name="content_similar_keep">لا، أضفه مستقلًا</string>
+    <string name="content_merge_note">الدمج لا يحدث تلقائيًا — أنت من يقرر.</string>
+    <string name="content_posted">نُشر المحتوى</string>
+    <string name="content_contribution_added">أُضيفت كمساهمة في الدرس القائم</string>
+    <string name="content_pages">الصفحات</string>
+    <string name="content_contributions">من ساهم</string>
+    <string name="content_history">سجل التعديلات</string>
+    <string name="content_useful">مفيد</string>
+    <string name="content_save">حفظ في مكتبتي</string>
+    <string name="content_unsave">إزالة من مكتبتي</string>
+    <string name="content_correction">طلب تصحيح</string>
+    <string name="content_deletion">طلب إزالة</string>
+    <string name="content_correction_field">الحقل الخاطئ</string>
+    <string name="content_correction_value">القيمة الصحيحة</string>
+    <string name="content_correction_reason">لماذا؟</string>
+    <string name="content_deletion_reason">سبب الإزالة</string>
+    <string name="content_pending_deletion">قيد تصويت الإزالة</string>
+    <string name="content_pending_correction">قيد تصويت التصحيح</string>
+    <string name="content_deleted">حُذف بتصويت المجتمع</string>
+    <string name="content_edited">عُدّل بتصويت المجتمع</string>
+    <string name="content_mine">محتواي</string>
+    <string name="content_comments">التعليقات</string>
+    <string name="content_comment_hint">اكتب تعليقًا…</string>
+    <string name="content_deletion_rule">الإزالة تحتاج موافقة كل الأعضاء؛ رفض واحد يُبقي المحتوى.</string>
+
+    <!-- ══ الواجبات ════════════════════════════════════════════════════════════ -->
+    <string name="homework_title">الواجبات</string>
+    <string name="homework_today">اليوم</string>
+    <string name="homework_week">هذا الأسبوع</string>
+    <string name="homework_upcoming">قادمة</string>
+    <string name="homework_overdue">متأخرة</string>
+    <string name="homework_done">تم إنجازها</string>
+    <string name="homework_kind_homework">واجب</string>
+    <string name="homework_kind_task">مهمة</string>
+    <string name="homework_due">التسليم: %1$s</string>
+    <string name="homework_due_time">التسليم: %1$s — %2$s</string>
+    <string name="homework_no_due">بلا موعد</string>
+    <string name="homework_mark_done">تم الإنجاز</string>
+    <string name="homework_mark_undone">إلغاء الإنجاز</string>
+    <string name="homework_mine_done">أنجزته</string>
+    <string name="homework_class_completed">أنجزه %1$d من الزملاء</string>
+    <string name="homework_new">واجب جديد</string>
+    <string name="homework_empty">لا واجبات هنا</string>
+    <string name="homework_reminder_title">تذكير بواجب</string>
+    <string name="homework_reminder_body">%1$s — التسليم %2$s</string>
+    <string name="homework_checklist">خطوات</string>
+
+    <!-- ══ الاختبارات ══════════════════════════════════════════════════════════ -->
+    <string name="exams_title">الاختبارات</string>
+    <string name="exams_upcoming">القادمة</string>
+    <string name="exams_past">السابقة</string>
+    <string name="exams_new">اختبار جديد</string>
+    <string name="exams_date">تاريخ الاختبار</string>
+    <string name="exams_countdown">%1$d يومًا</string>
+    <string name="exams_countdown_today">اليوم</string>
+    <string name="exams_countdown_tomorrow">غدًا</string>
+    <string name="exams_study_pack">حزمة الاستذكار</string>
+    <string name="exams_pack_lessons">دروس مرتبطة</string>
+    <string name="exams_pack_homework">واجبات مرتبطة</string>
+    <string name="exams_pack_books">كتب ومراجع</string>
+    <string name="exams_pack_questions">استفسارات</string>
+    <string name="exams_empty">لا اختبارات</string>
+    <string name="exams_kind_quiz">اختبار قصير</string>
+    <string name="exams_kind_midterm">نصف الفصل</string>
+    <string name="exams_kind_final">نهائي</string>
+    <string name="exams_kind_practical">عملي</string>
+
+    <!-- ══ الفعاليات ═══════════════════════════════════════════════════════════ -->
+    <string name="events_title">الفعاليات</string>
+    <string name="events_upcoming">القادمة</string>
+    <string name="events_past">السابقة</string>
+    <string name="events_new">فعالية جديدة</string>
+    <string name="events_empty">لا فعاليات</string>
+    <string name="events_kind_trip">رحلة</string>
+    <string name="events_kind_competition">مسابقة</string>
+    <string name="events_kind_announcement">إعلان</string>
+    <string name="events_kind_activity">نشاط</string>
+    <string name="events_kind_holiday">إجازة</string>
+    <string name="events_kind_meeting">اجتماع</string>
+    <string name="events_kind_other">أخرى</string>
+
+    <!-- ══ الاستفسارات ═════════════════════════════════════════════════════════ -->
+    <string name="issues_title">الاستفسارات</string>
+    <string name="issues_open">مفتوح</string>
+    <string name="issues_in_discussion">قيد النقاش</string>
+    <string name="issues_solved">محلول</string>
+    <string name="issues_closed">مغلق</string>
+    <string name="issues_all">الكل</string>
+    <string name="issues_new">استفسار جديد</string>
+    <string name="issues_ask">اسأل عن هذا</string>
+    <string name="issues_best_answer">أفضل إجابة</string>
+    <string name="issues_mark_best">اختيار كأفضل إجابة</string>
+    <string name="issues_clear_best">إلغاء أفضل إجابة</string>
+    <string name="issues_answering">الردود</string>
+    <string name="issues_write_answer">اكتب ردًا…</string>
+    <string name="issues_hide_comment">إخفاء</string>
+    <string name="issues_linked_homework">مرتبط بواجب</string>
+    <string name="issues_linked_exam">مرتبط باختبار</string>
+    <string name="issues_linked_lesson">مرتبط بدرس</string>
+    <string name="issues_empty">لا استفسارات</string>
+    <string name="issues_change_status">تغيير الحالة</string>
+
+    <!-- ══ الجدول والتصويت ═════════════════════════════════════════════════════ -->
+    <string name="schedule_title">الجدول</string>
+    <string name="schedule_current">الجدول الحالي</string>
+    <string name="schedule_versions">النسخ</string>
+    <string name="schedule_fill_period">تعبئة حصة %1$d</string>
+    <string name="schedule_fill_body">لا يوجد درس في هذه الحصة. اختر المادة لتُثبَّت.</string>
+    <string name="schedule_slot_filled">هذه الحصة معبّأة بالفعل — تغييرها يحتاج تصويت المجموعة.</string>
+    <string name="schedule_propose_change">اقترح تغييرًا</string>
+    <string name="schedule_propose_body">سيصوّت الأعضاء، ولا يُطبَّق أي تغيير تلقائيًا.</string>
+    <string name="schedule_no_versions">لا نسخ للجدول</string>
+    <string name="schedule_subject_pick">اختر المادة</string>
+    <string name="votes_title">قرارات المجتمع</string>
+    <string name="votes_open">طلبات مفتوحة</string>
+    <string name="votes_mine">طلباتي</string>
+    <string name="votes_approve">موافق</string>
+    <string name="votes_reject">رافض</string>
+    <string name="votes_abstain">محايد</string>
+    <string name="votes_progress">%1$d من %2$d</string>
+    <string name="votes_remaining">متبقٍ %1$d</string>
+    <string name="votes_approved">تمت الموافقة</string>
+    <string name="votes_rejected">رُفض الطلب</string>
+    <string name="votes_withdraw">سحب الطلب</string>
+    <string name="votes_empty">لا طلبات مفتوحة</string>
+    <string name="votes_rule_deletion">الإزالة: موافقة الجميع (رفض واحد يكفي للإبقاء)</string>
+    <string name="votes_rule_correction">التصحيح: أغلبية الأعضاء</string>
+    <string name="votes_rule_schedule">الجدول: ربع الأعضاء على الأقل</string>
+
+    <!-- ══ الدردشة ═════════════════════════════════════════════════════════════ -->
+    <string name="chat_title">الدردشة</string>
+    <string name="chat_group">مجموعة الصف</string>
+    <string name="chat_message_hint">اكتب رسالة…</string>
+    <string name="chat_reply">رد</string>
+    <string name="chat_typing">يكتب…</string>
+    <string name="chat_online">متصل</string>
+    <string name="chat_offline">غير متصل</string>
+    <string name="chat_reconnecting">جارٍ إعادة الاتصال…</string>
+    <string name="chat_no_messages">لا رسائل بعد</string>
+    <string name="chat_start_dm">محادثة خاصة</string>
+    <string name="chat_attach">إرفاق</string>
+    <string name="chat_note">الدردشة للمناقشة — والمحتوى الرسمي مكانه المواد والدروس.</string>
+
+    <!-- ══ المكتبة والملاحظات والمحفوظات ═══════════════════════════════════════ -->
+    <string name="library_title">المكتبة</string>
+    <string name="library_books">الكتب</string>
+    <string name="library_new">كتاب جديد</string>
+    <string name="library_official_link">رابط رسمي</string>
+    <string name="library_hosted">نسخة على تنوير</string>
+    <string name="library_rights_note">لا نرفع كتابًا إلا إذا كان مسموحًا بنشره.</string>
+    <string name="library_empty">لا كتب بعد</string>
+    <string name="notes_title">ملاحظاتي</string>
+    <string name="notes_new">ملاحظة جديدة</string>
+    <string name="notes_hint">اكتب ما لا تريد أن ينساه أحد… ولا يراه غيرك</string>
+    <string name="notes_private">ملاحظات خاصة بك وحدك</string>
+    <string name="notes_empty">لا ملاحظات</string>
+    <string name="saved_title">مكتبتي</string>
+    <string name="saved_empty">لم تحفظ شيئًا بعد</string>
+    <string name="contributions_title">المساهمات</string>
+    <string name="contributions_body">تقديرًا لمن رفع صورة درس فات الجميع. ليست لوحة صدارة.</string>
+    <string name="contributions_count">%1$d مساهمة</string>
+    <string name="contributions_empty">لا مساهمات بعد</string>
+    <string name="missed_title">ماذا فاتني؟</string>
+    <string name="missed_since">منذ آخر زيارة %1$s</string>
+    <string name="missed_empty">لم يفتك شيء — كل شيء موثَّق</string>
+    <string name="missed_mark_seen">تم، رأيت كل شيء</string>
+
+    <!-- ══ المزيد والإعدادات ═══════════════════════════════════════════════════ -->
+    <string name="more_title">أكثر</string>
+    <string name="more_library">المكتبة</string>
+    <string name="more_saved">مكتبتي</string>
+    <string name="more_notes">ملاحظاتي</string>
+    <string name="more_contributions">المساهمات</string>
+    <string name="more_issues">الاستفسارات</string>
+    <string name="more_exams">الاختبارات</string>
+    <string name="more_events">الفعاليات</string>
+    <string name="more_schedule">الجدول</string>
+    <string name="more_decisions">قرارات المجتمع</string>
+    <string name="more_settings">الإعدادات</string>
+    <string name="more_about">عن تنوير</string>
+    <string name="settings_title">الإعدادات</string>
+    <string name="settings_appearance">العرض والراحة</string>
+    <string name="settings_high_contrast">تباين عالٍ</string>
+    <string name="settings_high_contrast_body">حدود أوضح ونصوص أكثر وضوحًا</string>
+    <string name="settings_reduce_blur">تقليل الضباب</string>
+    <string name="settings_reduce_blur_body">مفيد في الأجهزة الضعيفة أو عند إطالة البطارية</string>
+    <string name="settings_reduce_motion">تقليل الحركة</string>
+    <string name="settings_reduce_motion_body">إيقاف الحركات والانتقالات</string>
+    <string name="settings_font_scale">حجم الخط</string>
+    <string name="settings_data">البيانات والتخزين</string>
+    <string name="settings_data_saver">توفير البيانات</string>
+    <string name="settings_data_saver_body">صور أخف، وتحميل أقل، ومزامنة عند Wi‑Fi فقط</string>
+    <string name="settings_image_quality">جودة الصور المرفوعة</string>
+    <string name="settings_quality_high">عالية</string>
+    <string name="settings_quality_medium">متوسطة</string>
+    <string name="settings_quality_low">اقتصادية</string>
+    <string name="settings_wifi_only_sync">المزامنة على Wi‑Fi فقط</string>
+    <string name="settings_wifi_only_books">تحميل الكتب على Wi‑Fi فقط</string>
+    <string name="settings_autoplay">تشغيل الفيديو تلقائيًا</string>
+    <string name="settings_auto_compress">ضغط الصور قبل الرفع</string>
+    <string name="settings_notifications">الإشعارات</string>
+    <string name="settings_quiet_hours">ساعات الهدوء</string>
+    <string name="settings_quiet_from">من</string>
+    <string name="settings_quiet_to">إلى</string>
+    <string name="settings_notif_lessons">الدروس</string>
+    <string name="settings_notif_homeworks">الواجبات</string>
+    <string name="settings_notif_exams">الاختبارات</string>
+    <string name="settings_notif_events">الفعاليات</string>
+    <string name="settings_notif_issues">الاستفسارات</string>
+    <string name="settings_notif_messages">الرسائل</string>
+    <string name="settings_notif_contributions">المساهمات</string>
+    <string name="settings_notif_schedule">الجدول</string>
+    <string name="settings_language">اللغة</string>
+    <string name="settings_language_arabic">العربية</string>
+    <string name="settings_language_english">English</string>
+    <string name="settings_timezone">توقيت المدرسة</string>
+    <string name="settings_offline">الحفظ دون اتصال</string>
+    <string name="settings_save_day">احفظ يومًا كاملًا</string>
+    <string name="settings_saved_days">أيام محفوظة: %1$d</string>
+    <string name="settings_clear_cache">تفريغ الذاكرة المؤقتة</string>
+    <string name="settings_storage_used">المستخدم على الجهاز: %1$s</string>
+    <string name="settings_version">الإصدار %1$s</string>
+    <string name="settings_privacy">الخصوصية</string>
+    <string name="settings_privacy_body">ملاحظاتك خاصة بك، وكلمة مرورك لا تغادر جهازك.</string>
+    <string name="settings_devices">أجهزتي</string>
+    <string name="settings_devices_body">أوقف أي جهاز لا تعرفه</string>
+    <string name="settings_revoke_device">إيقاف</string>
+    <string name="settings_current_device">هذا الجهاز</string>
+
+    <!-- ══ الإشعارات ═══════════════════════════════════════════════════════════ -->
+    <string name="notif_channel_lessons">الدروس</string>
+    <string name="notif_channel_homework">الواجبات</string>
+    <string name="notif_channel_exams">الاختبارات</string>
+    <string name="notif_channel_issues">الاستفسارات</string>
+    <string name="notif_channel_chat">الرسائل</string>
+    <string name="notif_channel_reminders">التذكيرات</string>
+    <string name="notif_grouped">%1$d تحديثات جديدة</string>
+    <string name="notif_undocumented_title">درس بلا توثيق</string>
+    <string name="notif_undocumented_body">%1$s فُتحت ولم تُوثَّق — من يضيفها؟</string>
+    <string name="notif_contribution_title">نحتاج مساهمة</string>
+    <string name="notif_contribution_body">ينقص يوم %1$s — أضف صورة أو ملاحظة</string>
+
+    <!-- ══ إمكانية الوصول ══════════════════════════════════════════════════════ -->
+    <string name="a11y_back">رجوع</string>
+    <string name="a11y_add_content">إضافة محتوى</string>
+    <string name="a11y_scan_enhance">تحسين الصورة كالماسح الضوئي</string>
+    <string name="a11y_progress">نسبة توثيق اليوم %1$d بالمئة</string>
+    <string name="a11y_status_documented">مُوثَّق</string>
+    <string name="a11y_status_needs">يحتاج مساهمة</string>
+    <string name="a11y_status_upcoming">لم يبدأ</string>
+    <string name="a11y_page">صفحة %1$d من %2$d</string>
+    <string name="a11y_chat">افتح الدردشة</string>
+    <string name="a11y_avatar">صورة %1$s</string>
+    <string name="a11y_more_actions">خيارات</string>
+
+    <!-- ══ الأخطاء ═════════════════════════════════════════════════════════════ -->
+    <string name="error_generic">حدث خطأ غير متوقع</string>
+    <string name="error_network">تعذّر الاتصال بالخادم</string>
+    <string name="error_offline">لا يوجد اتصال الآن</string>
+    <string name="error_unauthorized">يجب تسجيل الدخول</string>
+    <string name="error_forbidden">لا تملك صلاحية لهذا</string>
+    <string name="error_not_found">العنصر غير موجود</string>
+    <string name="error_rate_limited">محاولات كثيرة — انتظر قليلًا</string>
+    <string name="error_validation">تحقق من البيانات المدخلة</string>
+    <string name="error_file_too_large">الملف أكبر من الحد المسموح</string>
+    <string name="error_unsupported_type">نوع الملف غير مدعوم</string>
+    <string name="error_duplicate_request">هناك طلب مشابه مفتوح</string>
+    <string name="error_conflict">تعارض مع تغيير آخر — حدّث الصفحة</string>
+
+    <!-- ══ وحدات ══════════════════════════════════════════════════════════════ -->
+    <string name="unit_percent">%1$d%%</string>
+    <string name="unit_pages">%1$d صفحة</string>
+    <string name="unit_minutes">%1$d دقيقة</string>
+
+    <!-- ══ أيام الأسبوع (٠ = الأحد) ═══════════════════════════════════════════ -->
+    <string name="weekday_0">الأحد</string>
+    <string name="weekday_1">الاثنين</string>
+    <string name="weekday_2">الثلاثاء</string>
+    <string name="weekday_3">الأربعاء</string>
+    <string name="weekday_4">الخميس</string>
+    <string name="weekday_5">الجمعة</string>
+    <string name="weekday_6">السبت</string>
+
+    <!-- ══ الكلمات المختصرة ════════════════════════════════════════════════════ -->
+    <string name="short_today">اليوم</string>
+    <string name="short_tomorrow">غدًا</string>
+    <string name="short_yesterday">أمس</string>
+</resources>

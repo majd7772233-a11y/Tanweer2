@@ -1,0 +1,37 @@
+<resources>
+    <!-- ══ الخلفية: ليل دائم (Midnight) — تنوير داكن أولًا ══════════════════════ -->
+    <color name="midnight">#FF070B14</color>
+    <color name="midnight_deep">#FF04070D</color>
+    <color name="midnight_soft">#FF0C1220</color>
+
+    <!-- ══ الزجاج ══════════════════════════════════════════════════════════════ -->
+    <color name="glass_fill">#14FFFFFF</color>
+    <color name="glass_fill_strong">#22FFFFFF</color>
+    <color name="glass_border">#2EFFFFFF</color>
+    <color name="glass_press">#1FFFFFFF</color>
+    <color name="glass_highlight">#38FFFFFF</color>
+
+    <!-- ══ الألوان المعبّرة ════════════════════════════════════════════════════ -->
+    <color name="cyan_soft">#FF7FE3E8</color>
+    <color name="blue_cool">#FF6FA8FF</color>
+    <color name="amber_warm">#FFFFC46B</color>
+    <color name="red_alert">#FFFF5D6C</color>
+    <color name="green_ok">#FF63E6A8</color>
+    <color name="violet_soft">#FFB39BFF</color>
+
+    <!-- ══ النصوص ══════════════════════════════════════════════════════════════ -->
+    <color name="text_primary">#FFEDF3FA</color>
+    <color name="text_secondary">#FFA7B4C7</color>
+    <color name="text_muted">#FF7183A0</color>
+
+    <!-- ══ حالات التوثيق (تُعرض رمزًا ونصًا أيضًا، لا لونًا فقط) ═══════════════ -->
+    <color name="state_documented">#FF63E6A8</color>
+    <color name="state_needs_contribution">#FFFFC46B</color>
+    <color name="state_upcoming">#FF7183A0</color>
+    <color name="state_exam">#FFFF5D6C</color>
+
+    <!-- ══ الواجهة الرسومية للنظام ═════════════════════════════════════════════ -->
+    <color name="splash_background">#FF070B14</color>
+    <color name="widget_background">#FF0C1220</color>
+    <color name="transparent">#00000000</color>
+</resources>
